@@ -444,6 +444,7 @@ window.__require = function e(t, n, o) {
         var a = cc._decorator,
             i = a.ccclass,
             r = a.property,
+
             s = function(e) {
                 function t() {
                     var t = null !== e && e.apply(this, arguments) || this;
@@ -457,6 +458,7 @@ window.__require = function e(t, n, o) {
                 }, t.Instance = null, c([r(cc.SpriteFrame)], t.prototype, "adsbutton", void 0), c([r(cc.SpriteFrame)], t.prototype, "adsbutton2", void 0), c([r(cc.SpriteFrame)], t.prototype, "caidia", void 0), c([r(cc.SpriteFrame)], t.prototype, "fllows", void 0), c([r(cc.SpriteFrame)], t.prototype, "fruit", void 0), c([r(cc.SpriteFrame)], t.prototype, "guozhiZ", void 0), c([r(cc.SpriteFrame)], t.prototype, "guozhiL", void 0), c([r(cc.SpriteFrame)], t.prototype, "fruitL", void 0), t = n = c([i], t)
             }(cc.Component);
         n.default = s, cc._RF.pop()
+
     }, {}],
     EffectCenter: [function(e, t, n) {
         "use strict";
@@ -1253,6 +1255,13 @@ window.__require = function e(t, n, o) {
                                 }, l)))
                             }, l = this, u = 0; u < n; u++) i()
                     }
+                },t.prototype.getFruitFrom=function(x,y){
+
+                  for (var t = 0; t < this.fruitNode.children.length; t++) {
+                      var xx = this.fruitNode.children[t].x, yy=this.fruitNode.children[t].y,rr=this.fruitNode.children[t].width/2;
+                      if (Math.sqrt((x-xx)**2+(y-yy)**2)<rr){return this.fruitNode.children[t];}
+                  }
+                  return null;
                 }, t.Instance = null, c([h(cc.Node)], t.prototype, "bgLayer", void 0), c([h(cc.Node)], t.prototype, "bgCamera", void 0), c([h(cc.Node)], t.prototype, "mainCamera", void 0), c([h(cc.Node)], t.prototype, "fruitNode", void 0), c([h(cc.Node)], t.prototype, "lineNode", void 0), c([h(cc.Node)], t.prototype, "bazieffect", void 0), c([h(cc.Node)], t.prototype, "downEffect", void 0), c([h(cc.Prefab)], t.prototype, "fruitPre", void 0), t = n = c([f], t)
             }(cc.Component);
         n.default = m, cc._RF.pop()
@@ -1310,8 +1319,11 @@ window.__require = function e(t, n, o) {
                 }
                 var n;
                 return o(t, e), n = t, t.prototype.onLoad = function() {
+                  cc.director.getScheduler().setTimeScale(10) 
+
                     null != n.Instance && n.Instance.destroy(), n.Instance = this, cc.find("Canvas/bgLayer").setContentSize(cc.winSize.width, cc.winSize.height)
                 }, t.prototype.start = function() {
+
                     this.PhysicsSystemCtrl(!0, !1)
                 }, t.prototype.update = function(e) {}, t.prototype.lateUpdate = function() {
                     this.score = s.default.score
@@ -1522,20 +1534,46 @@ window.__require = function e(t, n, o) {
                 }, t.prototype.update = function(e) {}, t.prototype.openTouch = function() {
                     this.node.on(cc.Node.EventType.TOUCH_START, this.onTouchStart, this), this.node.on(cc.Node.EventType.TOUCH_MOVE, this.onTouchMove, this), this.node.on(cc.Node.EventType.TOUCH_END, this.onTouchEnd, this), this.node.on(cc.Node.EventType.TOUCH_CANCEL, this.onTouchEnd, this)
                 }, t.prototype.onTouchStart = function(e) {
-                    if (i.default.playerTouch && null != a.default.Instance.targetFruit) {
-                        var t = this.node.convertToNodeSpaceAR(e.getLocation()).x,
-                            n = a.default.Instance.targetFruit.y;
-                        cc.tween(a.default.Instance.targetFruit).to(.1, {
-                            position: cc.v2(t, n)
-                        }).start()
+                  if (a.deletion_mode){
+
+
+
+
+
                     }
+                    else{
+
+                      if (i.default.playerTouch && null != a.default.Instance.targetFruit) {
+                          var t = this.node.convertToNodeSpaceAR(e.getLocation()).x,
+                              n = a.default.Instance.targetFruit.y;
+                          cc.tween(a.default.Instance.targetFruit).to(.1, {
+                              position: cc.v2(t, n)
+                          }).start()
+                      }
+                    }
+
                 }, t.prototype.onTouchMove = function(e) {
+                  if (a.deletion_mode){
+
+                  }else{
                     i.default.playerTouch && null != a.default.Instance.targetFruit && (a.default.Instance.targetFruit.x = this.node.convertToNodeSpaceAR(e.getLocation()).x)
-                }, t.prototype.onTouchEnd = function(e) {
+                }
+              }, t.prototype.onTouchEnd = function(e) {
+                if (a.deletion_mode){
+
+
+                  var x=this.node.convertToNodeSpaceAR(e.getLocation()).x,y=this.node.convertToNodeSpaceAR(e.getLocation()).y-a.default.Instance.fruitNode.y;
+                  var node=a.default.Instance.getFruitFrom(x,y);
+                  if (node){
+                  node.active = !1;node.destroy();
+                }
+                a.deletion_mode=false;
+
+                }else{
                     var t = this;
                     i.default.playerTouch && null != a.default.Instance.targetFruit && (a.default.Instance.targetFruit.getComponent(cc.PhysicsCircleCollider).radius = a.default.Instance.targetFruit.height / 2, a.default.Instance.targetFruit.getComponent(cc.PhysicsCircleCollider).apply(), a.default.Instance.targetFruit.getComponent(cc.RigidBody).type = cc.RigidBodyType.Dynamic, a.default.Instance.targetFruit.getComponent(cc.RigidBody).linearVelocity = cc.v2(0, -800), a.default.Instance.targetFruit = null, this.scheduleOnce(function() {
                         i.default.GameUpdateCtrl && (0 == t.createFruitCount ? (a.default.Instance.createOneFruit(0), t.createFruitCount++) : 1 == t.createFruitCount ? (a.default.Instance.createOneFruit(0), t.createFruitCount++) : 2 == t.createFruitCount ? (a.default.Instance.createOneFruit(1), t.createFruitCount++) : 3 == t.createFruitCount ? (a.default.Instance.createOneFruit(2), t.createFruitCount++) : 4 == t.createFruitCount ? (a.default.Instance.createOneFruit(2), t.createFruitCount++) : 5 == t.createFruitCount ? (a.default.Instance.createOneFruit(3), t.createFruitCount++) : t.createFruitCount > 5 && (a.default.Instance.createOneFruit(s.default.RandomInteger(0, 5)), t.createFruitCount++))
-                    }, .5))
+                    }, .5))}
                 }, t.prototype.closeTouch = function() {
                     this.node.off(cc.Node.EventType.TOUCH_START, this.onTouchStart, this), this.node.off(cc.Node.EventType.TOUCH_MOVE, this.onTouchMove, this), this.node.off(cc.Node.EventType.TOUCH_END, this.onTouchEnd, this), this.node.off(cc.Node.EventType.TOUCH_CANCEL, this.onTouchEnd, this)
                 }, t.prototype.addScore = function() {
@@ -1817,10 +1855,7 @@ window.__require = function e(t, n, o) {
                 }))), this.gameOverT2.node.opacity = 0, this.gameOverT2.node.y = this.gameOverT1.node.y - 100, this.gameOverT2.node.runAction(cc.sequence(cc.delayTime(.2), cc.spawn(cc.fadeIn(1), cc.moveBy(1, 0, -50)), cc.delayTime(.3))), this.gameOverT2.node.runAction(cc.sequence(cc.delayTime(2), cc.scaleTo(.3, 1.2).easing(cc.easeSineInOut()), cc.scaleTo(.3, 1).easing(cc.easeSineInOut()))).repeatForever()
             },
             initEndLayer: function() {
-                this.gameOverT1.node.active = !1, this.gameOverT2.node.active = !1, this.gameOverToEnd.active = !1, o.publicGameBool || adBreak({
-                    type: "next",
-                    name: "restart-game"
-                }), a.gotoEndLayer1()
+                this.gameOverT1.node.active = !1, this.gameOverT2.node.active = !1, this.gameOverToEnd.active = !1, o.publicGameBool, a.gotoEndLayer1()
             },
             start: function() {},
             update: function(e) {
@@ -1833,10 +1868,7 @@ window.__require = function e(t, n, o) {
                 o.gameScore = e
             },
             RestartGame: function() {
-                o.GAME_OVER_BOOL = !0, o.gameScore = 0, o.publicGameBool || adBreak({
-                    type: "next",
-                    name: "restart-game"
-                }), c.loadingScene("MainGameScene")
+                o.GAME_OVER_BOOL = !0, o.gameScore = 0, o.publicGameBool , c.loadingScene("MainGameScene")
             },
             SetGameEndScore: function() {
                 a.gameOverShowText(o.gameScore, 1)
@@ -1910,9 +1942,13 @@ window.__require = function e(t, n, o) {
                 }, t.prototype.update = function(e) {
                     this.UpdateScoreLabel(e), this.lerpCtrl && this.lerpNumFunc(this.passlevelYQ), this.levelPanel.children[1].getComponent(cc.Label).string = s.default.Instance.GetLevel().toString()
                 }, t.prototype.adsButtonFunc = function() {
-                    if(b.default.Instance.targetFruit.name==='') return;
-                    b.default.Instance.targetFruit.destroy()
-                    b.default.Instance.createOneFruit(Math.floor(Math.random()*6))
+
+
+
+                    b.deletion_mode=true;
+
+
+
                 }, t.prototype.TestPasslevel = function() {
                     var e = this;
                     this.lerpCtrl = !0, this.nowYQ >= this.passlevelYQ && (this.levelPanel.children[2].runAction(cc.sequence(cc.delayTime(1.3), cc.callFunc(function() {
@@ -1958,10 +1994,7 @@ window.__require = function e(t, n, o) {
                     var e = this;
                     this.congratulation.children[2].active = !1, this.congratulation.children[1].runAction(cc.sequence(cc.scaleTo(.5, 0).easing(cc.easeBackIn()), cc.callFunc(function() {
                         e.congratulation.active = !1, a.default.GameUpdateCtrl = !0
-                    }))), l.publicGameBool || adBreak({
-                        type: "next",
-                        name: "restart-game"
-                    }), this.scheduleOnce(function() {
+                    }))), l.publicGameBool , this.scheduleOnce(function() {
                         e.player.getComponent(cc.PolygonCollider).enabled = !0
                     }, 1)
                 }, t.Instance = null, c([f(cc.Node)], t.prototype, "mainCamera", void 0), c([f(cc.Node)], t.prototype, "bgLayer", void 0), c([f(cc.Label)], t.prototype, "scoreLabel", void 0), c([f(cc.Node)], t.prototype, "scorePanel", void 0), c([f(cc.Node)], t.prototype, "guidePanel", void 0), c([f(cc.Node)], t.prototype, "injuredPanel", void 0), c([f(cc.Node)], t.prototype, "levelPanel", void 0), c([f(cc.Node)], t.prototype, "levelProgress", void 0), c([f(cc.Node)], t.prototype, "heartPanel", void 0), c([f(cc.Node)], t.prototype, "congratulation", void 0), c([f(cc.Node)], t.prototype, "adsButton", void 0), c([f(cc.Node)], t.prototype, "player", void 0), t = n = c([p], t)
@@ -3842,10 +3875,7 @@ console.log('12')
                 }, t.prototype.start = function() {
                     this.startPanel.children[1].scaleX = 0, this.startPanel.children[1].runAction(cc.scaleTo(.5, .9).easing(cc.easeBackOut())), this.startPanel.children[2].runAction(cc.repeatForever(cc.sequence(cc.scaleTo(.5, 1.1), cc.scaleTo(.5, 1), cc.delayTime(.5)))), this.initTitle(), cc.director.preloadScene("MainGameScene")
                 }, t.prototype.StartGame = function() {
-                    i.publicGameBool || adBreak({
-                        type: "next",
-                        name: "restart-game"
-                    }), this.startBtn.stopAllActions(), this.startBtn.runAction(cc.sequence(cc.scaleTo(.1, .8), cc.scaleTo(.1, 1), cc.callFunc(function() {
+                    i.publicGameBool, this.startBtn.stopAllActions(), this.startBtn.runAction(cc.sequence(cc.scaleTo(.1, .8), cc.scaleTo(.1, 1), cc.callFunc(function() {
                         cc.director.loadScene("MainGameScene")
                     })))
                 }, t.prototype.initTitle = function() {
