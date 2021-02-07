@@ -1030,7 +1030,7 @@ window.__require = function e(t, n, o) {
         cc._RF.push(t, "f0663sWtfNKCKOL+Hvnt0cI", "GameConfig");
         var o = {
             GameClubButton: null,
-            SpeedScale:5,
+            SpeedScale:10,
             GameScene: null,
             launchScene: null,
             Bros: null,
