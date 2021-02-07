@@ -1030,6 +1030,7 @@ window.__require = function e(t, n, o) {
         cc._RF.push(t, "f0663sWtfNKCKOL+Hvnt0cI", "GameConfig");
         var o = {
             GameClubButton: null,
+            SpeedScale:5,
             GameScene: null,
             launchScene: null,
             Bros: null,
@@ -1319,8 +1320,6 @@ window.__require = function e(t, n, o) {
                 }
                 var n;
                 return o(t, e), n = t, t.prototype.onLoad = function() {
-                  cc.director.getScheduler().setTimeScale(10) 
-
                     null != n.Instance && n.Instance.destroy(), n.Instance = this, cc.find("Canvas/bgLayer").setContentSize(cc.winSize.width, cc.winSize.height)
                 }, t.prototype.start = function() {
 
@@ -1805,6 +1804,9 @@ window.__require = function e(t, n, o) {
             },
             play: function() {
                 console.log(1);
+                cc.director.getScheduler().setTimeScale(o.SpeedScale);
+                cc.director.getPhysicsManager().enabledAccumulator=true;
+
                 var e = this;
                 // adBreak({
                 //     type: "next",
@@ -1859,6 +1861,7 @@ window.__require = function e(t, n, o) {
             },
             start: function() {},
             update: function(e) {
+              cc.director.getPhysicsManager().update(e*(o.SpeedScale-1));
                 this.gameOverGoToOVer()
             },
             gameOverGoToOVer: function() {
@@ -3252,6 +3255,7 @@ window.__require = function e(t, n, o) {
                 this.mosquitoSpeedR > 0 ? (this.mosquitoTargetR = this.node.angle + e, this.mosquitoAddR = !0) : (this.mosquitoTargetR = this.node.angle - e, this.mosquitoAddR = !1), this.checkEdgeDelayCount = 0, this.onEdgeFlag && Math.abs(this.mosquitoSpeedR) > 2 && (this.mosquitoSpeedR = this.mosquitoSpeedR / 3 * 2, this.mosquitoTargetR = this.mosquitoTargetR / 3 * 2), this.onEdgeFlag = !1, this.turnNum--, this.turnNum <= 0 && (this.isTurn = !1)
             },
             updateMosquito: function() {
+
                 var e = this.mosquitoSpeedLen,
                     t = this.mosquitoSpeedR,
                     n = this.mosquitoTargetR,
