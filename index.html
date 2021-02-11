@@ -14,7 +14,47 @@
 
 
     <div id="control_panel">
-d
+
+      <p><i># 点击右上手指可以支付100分来消除一个水果。</i></p>
+
+
+
+Speedhack:<input id=speedhack value=2 type="number" style="width:40px" min=1></input>x
+
+ <button onclick="C.set_speed(document.getElementById('speedhack').value)">Set</button>
+
+<i># 加速游戏运行。速度过高可能导致物理引擎bug！</i>
+<p>Autoplay:<input id=interval value=100 type="number" style="width:40px" min=1></input>ms
+  <button onclick="C.play_int=(document.getElementById('interval').value)">Set</button>
+<i># 自动点击间隔</i></p>
+
+
+<button onclick="C.auto_play=true;C.method='fixed';C.play()">Fixed</button>
+
+<button onclick="C.auto_play=true;C.method='random';C.play()">Random</button>
+
+<button onclick="C.auto_play=false;">Stop</button>
+
+<i># 自动模式。分“固定位置”和“随机位置”两种策略</i>
+
+
+
       </div>
+
+
+
+
+
+
+
+
+
+
+
+
+      <script src="control.js"></script>
+      <script src="main.js"></script>
   </body>
+
+
 </html>

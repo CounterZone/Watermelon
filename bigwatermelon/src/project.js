@@ -1030,7 +1030,7 @@ window.__require = function e(t, n, o) {
         cc._RF.push(t, "f0663sWtfNKCKOL+Hvnt0cI", "GameConfig");
         var o = {
             GameClubButton: null,
-            SpeedScale:10,
+            SpeedScale:2,
             GameScene: null,
             launchScene: null,
             Bros: null,
@@ -1517,14 +1517,17 @@ window.__require = function e(t, n, o) {
             i = e("../common/PlayerInfo"),
             r = e("../Common/PoolManager"),
             s = e("../Common/Utils"),
+            uuu = e("MainGameUi"),
+
             l = cc._decorator,
             u = l.ccclass,
             d = l.property,
             p = function(e) {
                 function t() {
+
                     var t = null !== e && e.apply(this, arguments) || this;
                     return t.Rocker = null, t.stick = null, t.Max_r = 100, t.RockerJS = null, t.speed = 400, t.Arrow = null, t.knife = null, t.startPoint = null, t.touchPoint = null, t.endPoint = null, t.ddir = cc.v2(0, 0), t.isCut = !1, t.comboTime = 0, t.comboInterval = .4, t.comboNumber = 0, t.comboMaxNum = 7, t.createFruitCount = 0, t.istest = !1, t
-                }
+                };
                 var n;
                 return o(t, e), n = t, t.prototype.onLoad = function() {
                     null != n.Instance && n.Instance.destroy(), n.Instance = this
@@ -1533,21 +1536,18 @@ window.__require = function e(t, n, o) {
                 }, t.prototype.update = function(e) {}, t.prototype.openTouch = function() {
                     this.node.on(cc.Node.EventType.TOUCH_START, this.onTouchStart, this), this.node.on(cc.Node.EventType.TOUCH_MOVE, this.onTouchMove, this), this.node.on(cc.Node.EventType.TOUCH_END, this.onTouchEnd, this), this.node.on(cc.Node.EventType.TOUCH_CANCEL, this.onTouchEnd, this)
                 }, t.prototype.onTouchStart = function(e) {
+                  var t_node=this;
                   if (a.deletion_mode){
-
-
-
-
 
                     }
                     else{
 
                       if (i.default.playerTouch && null != a.default.Instance.targetFruit) {
-                          var t = this.node.convertToNodeSpaceAR(e.getLocation()).x,
+                          var t = t_node.node.convertToNodeSpaceAR(e.getLocation()).x,
                               n = a.default.Instance.targetFruit.y;
                           cc.tween(a.default.Instance.targetFruit).to(.1, {
                               position: cc.v2(t, n)
-                          }).start()
+                          }).start();
                       }
                     }
 
@@ -1556,28 +1556,30 @@ window.__require = function e(t, n, o) {
 
                   }else{
                     i.default.playerTouch && null != a.default.Instance.targetFruit && (a.default.Instance.targetFruit.x = this.node.convertToNodeSpaceAR(e.getLocation()).x)
+
                 }
               }, t.prototype.onTouchEnd = function(e) {
+                var t_node=t.Instance;
                 if (a.deletion_mode){
-
-
-                  var x=this.node.convertToNodeSpaceAR(e.getLocation()).x,y=this.node.convertToNodeSpaceAR(e.getLocation()).y-a.default.Instance.fruitNode.y;
+                  var x=t_node.node.convertToNodeSpaceAR(e.getLocation()).x,y=t_node.node.convertToNodeSpaceAR(e.getLocation()).y-a.default.Instance.fruitNode.y;
                   var node=a.default.Instance.getFruitFrom(x,y);
                   if (node){
-                  node.active = !1;node.destroy();
+                  node.active = !1;node.destroy();i.default.score-=100;i.default.score=i.default.score>0?i.default.score:0;uuu.default.Instance.SetScoreTween(i.default.score);
                 }
                 a.deletion_mode=false;
 
                 }else{
-                    var t = this;
-                    i.default.playerTouch && null != a.default.Instance.targetFruit && (a.default.Instance.targetFruit.getComponent(cc.PhysicsCircleCollider).radius = a.default.Instance.targetFruit.height / 2, a.default.Instance.targetFruit.getComponent(cc.PhysicsCircleCollider).apply(), a.default.Instance.targetFruit.getComponent(cc.RigidBody).type = cc.RigidBodyType.Dynamic, a.default.Instance.targetFruit.getComponent(cc.RigidBody).linearVelocity = cc.v2(0, -800), a.default.Instance.targetFruit = null, this.scheduleOnce(function() {
-                        i.default.GameUpdateCtrl && (0 == t.createFruitCount ? (a.default.Instance.createOneFruit(0), t.createFruitCount++) : 1 == t.createFruitCount ? (a.default.Instance.createOneFruit(0), t.createFruitCount++) : 2 == t.createFruitCount ? (a.default.Instance.createOneFruit(1), t.createFruitCount++) : 3 == t.createFruitCount ? (a.default.Instance.createOneFruit(2), t.createFruitCount++) : 4 == t.createFruitCount ? (a.default.Instance.createOneFruit(2), t.createFruitCount++) : 5 == t.createFruitCount ? (a.default.Instance.createOneFruit(3), t.createFruitCount++) : t.createFruitCount > 5 && (a.default.Instance.createOneFruit(s.default.RandomInteger(0, 5)), t.createFruitCount++))
+
+                    i.default.playerTouch && null != a.default.Instance.targetFruit && (a.default.Instance.targetFruit.x = t_node.node.convertToNodeSpaceAR(e.getLocation()).x)
+
+                    i.default.playerTouch && null != a.default.Instance.targetFruit && (a.default.Instance.targetFruit.getComponent(cc.PhysicsCircleCollider).radius = a.default.Instance.targetFruit.height / 2, a.default.Instance.targetFruit.getComponent(cc.PhysicsCircleCollider).apply(), a.default.Instance.targetFruit.getComponent(cc.RigidBody).type = cc.RigidBodyType.Dynamic, a.default.Instance.targetFruit.getComponent(cc.RigidBody).linearVelocity = cc.v2(0, -800), a.default.Instance.targetFruit = null, t_node.scheduleOnce(function() {
+                        i.default.GameUpdateCtrl && (0 == t_node.createFruitCount ? (a.default.Instance.createOneFruit(0), t_node.createFruitCount++) : 1 == t_node.createFruitCount ? (a.default.Instance.createOneFruit(0), t_node.createFruitCount++) : 2 == t_node.createFruitCount ? (a.default.Instance.createOneFruit(1), t_node.createFruitCount++) : 3 == t_node.createFruitCount ? (a.default.Instance.createOneFruit(2), t_node.createFruitCount++) : 4 == t_node.createFruitCount ? (a.default.Instance.createOneFruit(2), t_node.createFruitCount++) : 5 == t_node.createFruitCount ? (a.default.Instance.createOneFruit(3), t_node.createFruitCount++) : t_node.createFruitCount > 5 && (a.default.Instance.createOneFruit(s.default.RandomInteger(0, 5)), t_node.createFruitCount++))
                     }, .5))}
                 }, t.prototype.closeTouch = function() {
-                    this.node.off(cc.Node.EventType.TOUCH_START, this.onTouchStart, this), this.node.off(cc.Node.EventType.TOUCH_MOVE, this.onTouchMove, this), this.node.off(cc.Node.EventType.TOUCH_END, this.onTouchEnd, this), this.node.off(cc.Node.EventType.TOUCH_CANCEL, this.onTouchEnd, this)
+                    t.node.off(cc.Node.EventType.TOUCH_START, t.onTouchStart, t), t.node.off(cc.Node.EventType.TOUCH_MOVE, t.onTouchMove, t), t.node.off(cc.Node.EventType.TOUCH_END, t.onTouchEnd, t), t.node.off(cc.Node.EventType.TOUCH_CANCEL, t.onTouchEnd, t)
                 }, t.prototype.addScore = function() {
                     var e = r.default.Spawn("addScore", cc.find("Canvas/downEffParent"));
-                    e.position = cc.v2(0, 200), e.scale = 0, e.opacity = 255, e.children[1].getComponent(cc.Label).string = this.comboNumber.toString(), e.runAction(cc.sequence(cc.spawn(cc.scaleTo(.5, 1), cc.moveBy(.5, 0, 200)), cc.fadeOut(.5), cc.callFunc(function() {
+                    e.position = cc.v2(0, 200), e.scale = 0, e.opacity = 255, e.children[1].getComponent(cc.Label).string = t.comboNumber.toString(), e.runAction(cc.sequence(cc.spawn(cc.scaleTo(.5, 1), cc.moveBy(.5, 0, 200)), cc.fadeOut(.5), cc.callFunc(function() {
                         r.default.Despawn("addScore", e)
                     })))
                 }, t.Instance = null, c([d(cc.Node)], t.prototype, "Rocker", void 0), c([d(cc.Node)], t.prototype, "stick", void 0), c([d], t.prototype, "Max_r", void 0), c([d(cc.Node)], t.prototype, "Arrow", void 0), c([d(cc.Node)], t.prototype, "knife", void 0), t = n = c([u], t)
@@ -1779,7 +1781,8 @@ window.__require = function e(t, n, o) {
         cc._RF.push(t, "0e7a8SkMLxEY7nCB1Bqi8WZ", "MainGameJS");
         var o = e("GameConfig"),
             c = e("GameUiTools"),
-            a = e("MainManage");
+            a = e("MainManage"),
+            input = e("InputController");
         cc.Class({
             extends: cc.Component,
             properties: {
@@ -1806,6 +1809,24 @@ window.__require = function e(t, n, o) {
                 console.log(1);
                 cc.director.getScheduler().setTimeScale(o.SpeedScale);
                 cc.director.getPhysicsManager().enabledAccumulator=true;
+                cc.director.getPhysicsManager().FIXED_TIME_STEP=1/180;
+
+                window.addEventListener("message", (event) => {
+                  var msg=event.data;
+                  if (msg.instruction=="set_speed"){
+                    o.SpeedScale=msg.speed;
+                    cc.director.getScheduler().setTimeScale(o.SpeedScale);
+
+                  }
+                  else if (msg.instruction=="click") {
+                    var ev=new cc.Event.EventTouch();
+                    ev.touch=new cc.Touch();
+                    ev.setLocation(msg.x,msg.y);
+                    input.default.prototype.onTouchEnd(ev);
+                  }
+
+
+                });
 
                 var e = this;
                 // adBreak({
